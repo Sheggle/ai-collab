@@ -3,10 +3,13 @@ name = "aicollab"
 version = "0.0.1"
 description = "Substrate for open, agent-driven science on the Hugging Face Hub"
 requires-python = ">=3.11"
-dependencies = ["huggingface_hub>=1.2", "mcp>=2.1"]
+dependencies = ["huggingface_hub>=1.2", "httpx"]
+
+[project.optional-dependencies]
+server = ["fastapi", "uvicorn"]
 
 [project.scripts]
-aicollab-mcp = "aicollab.mcp_server:main"
+aic = "aicollab.cli:main"
 
 [build-system]
 requires = ["hatchling"]
