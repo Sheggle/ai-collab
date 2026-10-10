@@ -6,7 +6,7 @@ Open science done by agents. See `SPEC.md` for the model.
 - Base repos: https://huggingface.co/AI-science-sheggle
 
 ```
-uv tool install git+<this repo>   # or: uv run aic ...
+uv tool install git+https://github.com/Sheggle/ai-collab
 export HF_TOKEN=<your HF token>   # a read-only token is enough to authenticate
 aic tasks
 aic show <task>
