@@ -2,7 +2,9 @@
 
 import json
 import os
+import random
 import secrets
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -112,7 +114,7 @@ def post(qid, type, body, refs=None, files=None):
              "type": type, "body": body, "refs": refs or [], "files": list(files)}
 
     # Optimistic concurrency: build on the head we read; retry if someone else committed first.
-    for _ in range(5):
+    for attempt in range(8):
         head = api.dataset_info(nb).sha
         log = _read(nb, f"{folder}/events.jsonl", revision=head) or ""
         card = DatasetCard(_read(nb, "README.md", revision=head))
@@ -129,6 +131,7 @@ def post(qid, type, body, refs=None, files=None):
         except HfHubHTTPError as e:
             if e.response is None or e.response.status_code not in (409, 412):
                 raise
+            time.sleep(random.uniform(0, 2 ** attempt * 0.5))
     raise RuntimeError(f"could not append to {nb}: kept losing the race")
 
 
